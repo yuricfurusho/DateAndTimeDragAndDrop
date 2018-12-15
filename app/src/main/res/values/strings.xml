@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">DateAndTimeDragAndDrop</string>
+    <string name="placeholder_dateandtime">2018-12-15 14:46:42.476052</string>
 </resources>
