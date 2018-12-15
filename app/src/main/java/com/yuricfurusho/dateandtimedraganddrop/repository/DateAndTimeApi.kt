@@ -1,6 +1,7 @@
 package com.yuricfurusho.dateandtimedraganddrop.repository
 
 import android.util.Log
+import com.yuricfurusho.dateandtimedraganddrop.model.DateAndTimeJSON
 import io.reactivex.Observable
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -8,14 +9,15 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Url
 
 /**
  * Created by Yuri Furusho on 15/12/18.
  */
 interface DateAndTimeApi {
 
-    @GET("")
-    fun getDateAndTime(): Observable<Any>
+    @GET
+    fun getDateAndTime(@Url s: String): Observable<DateAndTimeJSON>
 
     companion object {
         private const val BASE_URL = "https://dateandtimeasjson.appspot.com/"
