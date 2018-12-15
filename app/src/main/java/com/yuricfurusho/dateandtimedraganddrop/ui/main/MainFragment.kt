@@ -56,6 +56,16 @@ class MainFragment : Fragment() {
         })
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.startRepeatingTask()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.stopRepeatingTask()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.main_menu, menu)
     }

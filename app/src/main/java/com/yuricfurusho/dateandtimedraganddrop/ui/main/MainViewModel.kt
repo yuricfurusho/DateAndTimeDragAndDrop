@@ -3,6 +3,7 @@ package com.yuricfurusho.dateandtimedraganddrop.ui.main
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.os.Handler
 import android.util.Log
 import com.yuricfurusho.dateandtimedraganddrop.model.DateAndTimeJSON
 import com.yuricfurusho.dateandtimedraganddrop.repository.DateAndTimeRepository
@@ -18,6 +19,10 @@ class MainViewModel : ViewModel() {
     private lateinit var mDateTime: MutableLiveData<String>
     private val repository = DateAndTimeRepository(this)
 
+    private var mPreviousTime: Long = System.currentTimeMillis()
+    private var mInterval: Long = 1000L
+    private val mHandler: Handler? = Handler()
+
     fun getDateTime(): LiveData<String> {
         if (!::mDateTime.isInitialized) {
             mDateTime = MutableLiveData()
@@ -27,6 +32,10 @@ class MainViewModel : ViewModel() {
     }
 
     fun loadDateAndTime() {
+        val currentTime = System.currentTimeMillis()
+        mInterval = mPreviousTime - currentTime
+        mPreviousTime = currentTime
+
         loading.value = true
         when (getEnvironment().value) {
             LOCAL -> loadLocalDateAndTime()
@@ -58,7 +67,7 @@ class MainViewModel : ViewModel() {
     fun getEnvironment(): LiveData<ENVIRONMENT> {
         if (!::environment.isInitialized) {
             environment = MutableLiveData()
-            environment.value = REMOTE
+            environment.value = LOCAL
         }
         return environment
     }
@@ -78,4 +87,22 @@ class MainViewModel : ViewModel() {
         return loading
     }
 
+    val runnable = object : Runnable {
+
+        override fun run() {
+            try {
+                loadDateAndTime()
+            } finally {
+                mHandler?.postDelayed(this, mInterval)
+            }
+        }
+    }
+
+    fun startRepeatingTask() {
+        runnable.run()
+    }
+
+    fun stopRepeatingTask() {
+        mHandler?.removeCallbacks(runnable)
+    }
 }

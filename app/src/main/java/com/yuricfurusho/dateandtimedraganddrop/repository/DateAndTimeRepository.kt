@@ -2,7 +2,7 @@ package com.yuricfurusho.dateandtimedraganddrop.repository
 
 import com.yuricfurusho.dateandtimedraganddrop.model.DateAndTimeJSON
 import com.yuricfurusho.dateandtimedraganddrop.ui.main.MainViewModel
-import io.reactivex.Observable
+import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -11,12 +11,12 @@ class DateAndTimeRepository(private val viewModel: MainViewModel) {
     private var compositeDisposable = CompositeDisposable()
 
     fun requestDateAndTime() {
-        val dateAndTimeApi: DateAndTimeApi = DateAndTimeApi.create()
+        val dateAndTimeApi: DateAndTimeApi = DateAndTimeApi.getInstance()
 
-        val observableDateAndTime: Observable<DateAndTimeJSON> =
+        val flowableDateAndTime: Flowable<DateAndTimeJSON> =
             dateAndTimeApi.getDateAndTime("")
 
-        val disposable = observableDateAndTime.subscribeOn(Schedulers.io())
+        val disposable = flowableDateAndTime.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { dateAndTimeJSON: DateAndTimeJSON? ->
