@@ -54,7 +54,11 @@ class MainViewModel : ViewModel() {
         repository.requestDateAndTime()
     }
 
+    private var countRequests: Long = 0
+
     fun setResponse(dateAndTimeJSON: DateAndTimeJSON?) {
+        Log.v("countRequests", "countRequestsENDED:$countRequests")
+
         mDateTime.value = dateAndTimeJSON?.datetime ?: DateAndTimeJSON("").datetime
         loading.value = false
     }

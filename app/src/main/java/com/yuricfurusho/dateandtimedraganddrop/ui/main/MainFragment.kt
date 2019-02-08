@@ -29,7 +29,7 @@ class MainFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
-        swipe_dateAndTime.setOnRefreshListener { viewModel.loadDateAndTime() }
+//        swipe_dateAndTime.setOnRefreshListener { viewModel.loadDateAndTime() }
 
         viewModel.getEnvironment().observe(this, Observer<MainViewModel.ENVIRONMENT> { environment ->
             environment?.let {
@@ -45,7 +45,7 @@ class MainFragment : Fragment() {
 
         viewModel.getLoading().observe(this, Observer<Boolean> { loading ->
             loading?.let {
-                swipe_dateAndTime.isRefreshing = loading
+//                swipe_dateAndTime.isRefreshing = loading
             }
         })
 
